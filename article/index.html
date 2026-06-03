@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Delivery Promise — Wise Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest: #163300;
+      --green: #9FE870;
+      --green-dark: #8BD960;
+      --surface: #F2F5F2;
+      --border: #E5E9E5;
+      --muted: #6B7B71;
+      --bg: #FFFFFF;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      font-size: 18px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      color: var(--forest);
+      background: var(--bg);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ——— Top bar ——— */
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 50;
+    }
+    .topbar svg { height: 22px; }
+    .topbar-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-left: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ——— Hero ——— */
+    .hero {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px 48px;
+    }
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+    .hero-meta {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .hero-meta .byline {
+      font-weight: 600;
+      color: var(--forest);
+    }
+
+    /* ——— Article body ——— */
+    .article {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    .article h2 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-top: 56px;
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+    .article p {
+      margin-bottom: 18px;
+    }
+    .article strong {
+      font-weight: 600;
+    }
+
+    /* ——— Pull quote ——— */
+    .pull-quote {
+      border-left: 4px solid var(--green);
+      padding: 24px 0 24px 24px;
+      margin: 36px 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--forest);
+    }
+
+    /* ——— Figure / screenshots ——— */
+    .fig-row {
+      display: grid;
+      gap: 16px;
+      margin: 36px 0;
+    }
+    .fig-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .fig-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .fig {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .fig img {
+      max-height: 420px;
+      width: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .fig figcaption {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .fig figcaption .source {
+      display: block;
+      font-size: 11px;
+      color: #9BA8A0;
+      margin-top: 2px;
+    }
+
+    /* ——— Prototype embed ——— */
+    .prototype-section {
+      margin: 48px 0;
+    }
+    .prototype-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 24px 0;
+    }
+    .prototype-frame {
+      width: 414px;
+      height: 896px;
+      border: 12px solid #111;
+      border-radius: 50px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      background: #fff;
+    }
+    .prototype-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .prototype-caption {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+    .prototype-fallback {
+      display: none;
+      text-align: center;
+      padding: 32px 24px;
+      background: var(--surface);
+      border-radius: 16px;
+      margin: 24px 0;
+    }
+    .prototype-fallback p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .prototype-fallback a {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 24px;
+      background: var(--green);
+      color: var(--forest);
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 999px;
+      text-decoration: none;
+    }
+
+    /* ——— Decisions list ——— */
+    .not-list {
+      margin: 24px 0;
+    }
+    .not-item {
+      padding: 16px 20px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    .not-item .label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .not-item p {
+      margin-bottom: 0;
+      margin-top: 4px;
+    }
+
+    /* ——— Divider ——— */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 56px 0;
+    }
+
+    /* ——— Footer ——— */
+    .article-footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      text-align: center;
+    }
+    .concept-notice {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--surface);
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ——— Responsive ——— */
+    @media (max-width: 768px) {
+      html { font-size: 16px; }
+      .hero { padding: 48px 20px 32px; }
+      .hero h1 { font-size: 2.2rem; }
+      .article { padding: 0 20px 48px; }
+      .fig-row.cols-2, .fig-row.cols-3 { grid-template-columns: 1fr; }
+      .prototype-frame {
+        width: 360px;
+        height: 780px;
+        border-width: 8px;
+        border-radius: 36px;
+      }
+      .article h2 { margin-top: 40px; }
+    }
+    @media (max-width: 420px) {
+      .prototype-frame {
+        width: 100%;
+        max-width: 340px;
+        height: 720px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<nav class="topbar" role="banner">
+  <svg viewBox="0 0 105 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Wise">
+    <path d="M17.2 3.4L12.7 20.6H8.6L5.7 9.4L2.8 20.6H-1.3L-5.8 3.4H-1.2L1.7 15.4L4.8 3.4H6.6H8.8L11.9 15.4L14.8 3.4H17.2Z" transform="translate(7 0)" fill="#163300"/>
+    <path d="M22.8 3.4H25.2V20.6H22.8V3.4Z" transform="translate(7 0)" fill="#163300"/>
+    <path d="M37.8 6.8C36.2 5.4 34.4 5 33 5C31.2 5 29.8 5.6 29.8 7C29.8 8.4 31.4 8.8 33.4 9.2C36.4 9.8 39.6 10.6 39.6 14.4C39.6 18.2 36.4 21 32.4 21C29.6 21 27 20 25.2 18.2L27 16.2C28.6 17.8 30.6 18.6 32.6 18.6C34.6 18.6 36.6 17.8 36.6 15.8C36.6 14 34.8 13.4 32.6 13C29.6 12.4 26.8 11.4 26.8 8C26.8 4.4 30 2.6 33.2 2.6C35.4 2.6 37.6 3.2 39.4 4.8L37.8 6.8Z" transform="translate(7 0)" fill="#163300"/>
+    <path d="M52.2 16.8C50.8 19.2 48.2 21 45 21C40.4 21 37 17.4 37 12.6V12C37 7.2 40.6 3 45.4 3C50 3 53 6.4 53 11.4V12.8H40C40.2 16 42.4 18.6 45.4 18.6C47.4 18.6 49 17.6 50.2 16L52.2 16.8ZM49.8 10.6C49.4 7.6 47.6 5.4 44.8 5.4C42 5.4 40.2 7.6 39.8 10.6H49.8Z" transform="translate(7 0)" fill="#163300"/>
+  </svg>
+  <span class="topbar-label">Design</span>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <p class="hero-eyebrow">Concept exploration</p>
+  <h1>The Delivery Promise</h1>
+  <p class="hero-sub">
+    When you send money home, the question isn't "what's the exchange rate?" It's "exactly how much will Mom get, and exactly when?" We explored what happens when the answer travels with the money.
+  </p>
+  <div class="hero-meta">
+    <span class="byline">Wise Design</span>
+    <span>·</span>
+    <span>8 min read</span>
+  </div>
+</header>
+
+<!-- Article -->
+<article class="article">
+
+  <!-- ——— 1. WHO WE DESIGNED FOR ——— -->
+  <h2>Who we designed for</h2>
+
+  <p>
+    Wise is brilliant for the multi-currency power user — someone who juggles balances, compares rates, and understands mid-market pricing. But the largest volume of cross-border money movement isn't portfolio management. It's <strong>remittances.</strong>
+  </p>
+  <p>
+    We focused on <strong>Lina</strong>: a caregiver in the US who sends $300 to her mother in Manila every month. Her mom doesn't use a banking app — she picks up the money through GCash, the Philippines' dominant mobile wallet, or sometimes in cash at a neighbourhood branch.
+  </p>
+  <p>
+    The Philippines is one of the world's largest remittance corridors. Lina's story represents millions of senders who care less about the rate and more about one thing: <strong>did Mom get the money, and when?</strong>
+  </p>
+
+  <div class="fig-row cols-2">
+    <figure class="fig">
+      <img src="assets/wise-amount-screen.jpg" alt="Wise send screen showing exchange rate, fee breakdown, and guaranteed rate prominently displayed" />
+      <figcaption>
+        Today's send screen leads with the rate — great for rate-savvy users, but Lina's first question is "how much will Mom get?"
+        <span class="source">Wise app — via Mobbin</span>
+      </figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="assets/wise-bank-details.jpg" alt="Wise recipient form asking for SWIFT/BIC code, IBAN, and full postal address" />
+      <figcaption>
+        The recipient form assumes a bank account (SWIFT, IBAN, address). Lina's mom doesn't have one — she uses GCash.
+        <span class="source">Wise app — via Mobbin</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- ——— 2. THE INSIGHT ——— -->
+  <h2>The insight</h2>
+
+  <p>
+    Two threads from our research pointed to the same gap.
+  </p>
+  <p>
+    <strong>The loudest complaint:</strong> "Where's my money?" When a transfer is delayed or held for a security check, Wise's current tracker drops the sender into an opaque waiting state. The copy reads: <em>"Your money's taking longer to pay out — sorry for the wait, we need a bit more time."</em> No updated ETA. No explanation of why. No action the sender can take. Just wait.
+  </p>
+
+  <div class="fig-row cols-2">
+    <figure class="fig">
+      <img src="assets/wise-delayed-tracker.jpg" alt="Wise transfer tracker showing a delayed state with the message: Your money's taking longer to pay out" />
+      <figcaption>
+        The current delay state: vague, reactive, and anxiety-inducing. No new ETA, no reason, no next step.
+        <span class="source">Wise app — via Mobbin</span>
+      </figcaption>
+    </figure>
+    <figure class="fig">
+      <img src="assets/kakaobank-delivery-comparison.jpg" alt="KakaoBank showing a side-by-side comparison of fast transfer vs regular transfer with fees and speed" />
+      <figcaption>
+        Elsewhere, apps like KakaoBank frame delivery as a clear choice: speed vs. cost, upfront. The sender decides.
+        <span class="source">KakaoBank app — via Mobbin</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <p>
+    <strong>The competitive gap:</strong> Other apps are starting to frame money movement around <em>delivery</em> — showing speed, cost, and method side by side, letting senders choose. Wise still leads with the exchange rate. For a rate-conscious user, that's exactly right. For a remittance sender like Lina, it buries the answer she actually needs.
+  </p>
+
+  <div class="pull-quote">
+    A sender's real need is certainty about the recipient's outcome: exactly how much, exactly when, through which channel.
+  </div>
+
+  <p>
+    Both threads — the opaque hold and the rate-first framing — share the same root cause: the transfer's "promise" to the sender is scattered across screens and states, and it breaks the moment something unexpected happens.
+  </p>
+
+  <!-- ——— 3. THE BET ——— -->
+  <h2>The bet — the Delivery Promise</h2>
+
+  <p>
+    One card. One object. We call it the <strong>Promise Card.</strong>
+  </p>
+  <p>
+    It says: <strong>"Mom gets ₱17,142 by Fri 6pm · GCash."</strong> It's born when Lina enters her amount and picks a delivery method. It appears — identical, unchanged — on the review screen, proving the number won't move at the last second. After she confirms, it becomes the live tracker: progress fills, steps update, and the ETA holds steady.
+  </p>
+  <p>
+    The key design decision: when a transfer is held or delayed, the card <strong>morphs but never breaks.</strong> A security hold turns the badge blue: "Safety check · ETA Fri 6pm" — calm, specific, still on track. If the ETA genuinely changes, it turns amber: "New ETA Sat 10am" — with a clear reason why, and concrete actions Lina can take to speed things up.
+  </p>
+  <p>
+    The recipient-gets number — ₱17,142 — never changes, across any state. That constancy is the trust mechanism. The card is the stitch that holds the experience together.
+  </p>
+
+  <!-- Prototype embed -->
+  <div class="prototype-section">
+    <div class="prototype-wrapper">
+      <div class="prototype-frame" id="proto-frame">
+        <iframe
+          src="https://zhurankou.github.io/remitly-exercise/"
+          title="Delivery Promise interactive prototype"
+          loading="lazy"
+          id="proto-iframe"
+        ></iframe>
+      </div>
+    </div>
+    <p class="prototype-caption">
+      Interactive prototype — click through Send&nbsp;→ Review&nbsp;→ Tracking&nbsp;→ Held states. Use the controls below the phone.
+    </p>
+    <noscript>
+      <div class="prototype-fallback" style="display:block">
+        <p>The interactive prototype requires JavaScript.</p>
+        <a href="https://zhurankou.github.io/remitly-exercise/" target="_blank" rel="noopener">Open prototype in a new tab</a>
+      </div>
+    </noscript>
+  </div>
+
+  <!-- ——— 4. WHAT WE CHOSE NOT TO DO ——— -->
+  <h2>What we chose not to do</h2>
+
+  <p>
+    Every concept is also a list of things you decided weren't worth the complexity. Here's ours.
+  </p>
+
+  <div class="not-list">
+    <div class="not-item">
+      <span class="label">Parked</span>
+      <p><strong>Recipient-side tracking.</strong> A "Share status with Mom" button is in the prototype, but we didn't build the recipient's view. It's the obvious next step — but this concept had to prove the sender's experience first.</p>
+    </div>
+    <div class="not-item">
+      <span class="label">Rejected</span>
+      <p><strong>Animated transitions between states.</strong> We experimented with the card smoothly morphing from green to blue to amber. It looked polished, but it obscured the state change. A clean swap — the card is green, now it's blue — is more honest and more legible.</p>
+    </div>
+    <div class="not-item">
+      <span class="label">Rejected</span>
+      <p><strong>Notification-style "push" updates.</strong> We considered surfacing delay updates as toast notifications or alert banners. But that fragments the information — the sender would see an alert, then have to find the tracker to understand the full picture. Keeping everything on the card means one place to look.</p>
+    </div>
+    <div class="not-item">
+      <span class="label">Descoped</span>
+      <p><strong>Multi-corridor support.</strong> Different corridors have wildly different delivery options and timelines. We designed for USD → PHP (GCash, cash pickup, bank) and trusted that the pattern — choose method, see promise, track promise — generalises. Proving it across corridors is future work.</p>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <p>
+    The Delivery Promise is a bet that the sender's real question isn't about rates or fees — it's about their family. <em>Did Mom get it? When will she?</em> One card, one number, one answer — from send to delivered.
+  </p>
+
+</article>
+
+<!-- Footer -->
+<footer class="article-footer">
+  <p class="concept-notice">
+    This is a concept exploration and design study, not a shipped Wise feature. No metrics, user quotes, or employee attributions are real.
+  </p>
+</footer>
+
+<script>
+  // Fallback: if iframe fails to load, show the link
+  const iframe = document.getElementById('proto-iframe');
+  const frame = document.getElementById('proto-frame');
+  if (iframe) {
+    iframe.addEventListener('error', showFallback);
+    // Also check after a timeout
+    setTimeout(() => {
+      try {
+        // If iframe is empty or errored
+        if (!iframe.contentDocument && !iframe.contentWindow) showFallback();
+      } catch(e) {
+        // Cross-origin — iframe loaded something, that's fine
+      }
+    }, 3000);
+  }
+  function showFallback() {
+    frame.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px;text-align:center;font-family:Inter,system-ui,sans-serif;">
+        <p style="font-size:15px;color:#6B7B71;margin-bottom:16px;">Prototype couldn't load inline.</p>
+        <a href="https://zhurankou.github.io/remitly-exercise/"
+           target="_blank" rel="noopener"
+           style="padding:12px 28px;background:#9FE870;color:#163300;font-weight:600;font-size:15px;border-radius:999px;text-decoration:none;">
+          Open prototype →
+        </a>
+      </div>`;
+  }
+</script>
+
+</body>
+</html>

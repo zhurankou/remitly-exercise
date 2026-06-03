@@ -56,3 +56,7 @@
 - **Mobbin MCP:** Searched and analyzed ~70 Wise iOS screenshots across send flow, tracker, review, held/delayed states, and home screens. This was critical for matching real component patterns rather than guessing.
 - **Web research:** Verified brand colors from brandcolorcode.com, dotyeti.com rebrand article, and wise.design. Studied the token architecture from the Ness Grixti portfolio piece on Wise's multi-brand system.
 - **Claude Preview:** Used to iterate on the prototype in-browser without leaving the development environment.
+
+## Article Screenshots
+
+The four reference screenshots embedded in the case study article (`article/assets/`) were downloaded directly from Mobbin's MCP API during the research phase. Each image is attributed in-caption ("Wise app — via Mobbin" / "KakaoBank app — via Mobbin") and full source URLs are documented in `article/assets/SOURCES.md`.
