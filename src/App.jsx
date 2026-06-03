@@ -34,6 +34,8 @@ const TRANSFER = {
   etaDelayedShort: 'Sat 10am',
 }
 
+const isEmbedded = window.self !== window.top
+
 export default function App() {
   const [step, setStep] = useState('setup')
   const [transitioning, setTransitioning] = useState(false)
@@ -56,6 +58,39 @@ export default function App() {
       case 'held-reestimated': return <HeldReestimated {...props} />
       default: return null
     }
+  }
+
+  if (isEmbedded) {
+    return (
+      <div className="h-screen flex flex-col bg-white">
+        <div
+          className="flex-1 overflow-y-auto overflow-x-hidden"
+          style={{
+            opacity: transitioning ? 0 : 1,
+            transition: 'opacity 200ms ease-in-out',
+          }}
+        >
+          {renderScreen()}
+        </div>
+        <div className="flex-shrink-0 px-3 py-2 bg-white border-t border-wise-border">
+          <div className="flex gap-1 justify-center flex-wrap">
+            {STEPS.map((s, i) => (
+              <button
+                key={s.id}
+                onClick={() => goTo(s.id)}
+                className={`px-2 py-1 rounded-full text-[10px] font-medium transition-all ${
+                  s.id === step
+                    ? 'bg-wise-forest text-white'
+                    : 'bg-wise-surface text-wise-forest'
+                }`}
+              >
+                {i + 1}. {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
